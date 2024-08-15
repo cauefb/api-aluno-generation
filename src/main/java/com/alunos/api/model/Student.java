@@ -6,6 +6,8 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.io.Serializable;
 import java.time.Instant;
 import java.util.Objects;
@@ -13,9 +15,9 @@ import java.util.UUID;
 
 @Table(name = "student")
 @Entity
-public class Student  implements Serializable{
+public class Student implements Serializable {
 
-    private static  final  long serializableVersionUID = 1L;
+    private static final long serializableVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -39,15 +41,18 @@ public class Student  implements Serializable{
     private int roomNumber;
 
     @CreationTimestamp
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "UTC")
     private Instant creationTimestamp;
 
     @UpdateTimestamp
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "UTC")
     private Instant updateTimestamp;
 
     public Student() {
     }
 
-    public Student(String name, int age, double firstSemesterGrade, double secondSemesterGrade, String teacherName, int roomNumber, Instant creationTimestamp, Instant updateTimestamp) {
+    public Student(String name, int age, double firstSemesterGrade, double secondSemesterGrade, String teacherName,
+            int roomNumber, Instant creationTimestamp, Instant updateTimestamp) {
         this.id = id;
         this.name = name;
         this.age = age;
@@ -61,10 +66,15 @@ public class Student  implements Serializable{
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
         Student student = (Student) o;
-        return age == student.age && Double.compare(firstSemesterGrade, student.firstSemesterGrade) == 0 && Double.compare(secondSemesterGrade, student.secondSemesterGrade) == 0 && roomNumber == student.roomNumber && Objects.equals(id, student.id) && Objects.equals(name, student.name) && Objects.equals(teacherName, student.teacherName);
+        return age == student.age && Double.compare(firstSemesterGrade, student.firstSemesterGrade) == 0
+                && Double.compare(secondSemesterGrade, student.secondSemesterGrade) == 0
+                && roomNumber == student.roomNumber && Objects.equals(id, student.id)
+                && Objects.equals(name, student.name) && Objects.equals(teacherName, student.teacherName);
     }
 
     @Override
